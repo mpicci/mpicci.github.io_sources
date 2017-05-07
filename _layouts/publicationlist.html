@@ -1,0 +1,29 @@
+---
+layout: page
+---
+<p style='font-size:small'>
+{% if page.lang == "en" %}
+<a href='{{site.baseurl}}/pages/he/publications'>For Hebrew publications click here.</a>
+{% else %}
+<a href='{{site.baseurl}}/pages/en/publications'>לפירסומים באנגלית לחצו כאן.</a>
+{% endif %}
+</p>
+{% for level in site.data.paperlevels %}
+{% assign papers=site.data.papers | where:"level", level | where:"lang", page.lang | sort: 'date' | reverse %}
+{% if papers.size > 0 %}
+<h2>{{site.data.labels.levels[level][page.lang]}}</h2>
+<ol class='publications'>
+  {% for p in papers %}
+    <li>
+        &quot;<b title="{{p.entitle}}">{{p.title}}</b>&quot;: {{p.authors}}. &nbsp;&nbsp;&nbsp;&nbsp;  {{p.content | markdownify | remove: '<p>' | remove: '</p>'}}
+        {% if p.onlinedemo %}
+        <a class='onlinedemo' href='{{p.onlinedemo.url}}'>{{site.data.labels.onlinedemo[page.lang]}}</a>
+        {% endif %}
+        {% if p.presentation %}
+        <a class='presentation' href='{{p.presentation}}'>{{site.data.labels.presentation[page.lang]}}</a>
+        {% endif %}
+    </li>
+  {% endfor %}
+</ol>
+{% endif %}
+{% endfor %}
